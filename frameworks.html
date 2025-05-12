@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>前端框架学习 - SHJ前端学习</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2a2a4a;
+            --accent-color: #4a90e2;
+            --hover-color: #6ab0ff;
+            --text-color: #ffffff;
+            --dark-bg: #1a1a2e;
+            --card-bg: #2d2d44;
+            --light-text: #e0e0e0;
+            --code-bg: #2a2a3a;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
+        /* 导航栏样式 */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: rgba(26, 26, 46, 0.95);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+        
+        .nav-brand {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li a {
+            color: var(--text-color);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            margin: 0 0.5rem;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-links li a:hover {
+            color: var(--accent-color);
+        }
+        
+        /* 内容区域 */
+        .content {
+            max-width: 1200px;
+            margin: 100px auto 50px;
+            padding: 0 20px;
+        }
+        
+        .page-title {
+            color: var(--accent-color);
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2.5rem;
+        }
+        
+        .intro {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .intro h2 {
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+        
+        .topics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .topic-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .topic-card h3 {
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .topic-card h3 i {
+            margin-right: 0.5rem;
+        }
+        
+        .code-example {
+            background-color: var(--code-bg);
+            border-radius: 5px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .code-example code {
+            color: var(--light-text);
+        }
+        
+        .resources {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .resources h2 {
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+        
+        .resources ul {
+            list-style-type: none;
+        }
+        
+        .resources ul li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .resources ul li a {
+            color: var(--accent-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .resources ul li a:hover {
+            color: var(--hover-color);
+            text-decoration: underline;
+        }
+        
+        .back-btn {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background-color: var(--accent-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 2rem;
+            transition: background-color 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            background-color: var(--hover-color);
+        }
+        
+        /* 页脚 */
+        .footer {
+            background-color: var(--primary-color);
+            padding: 2rem 0;
+            margin-top: 4rem;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            padding: 0 2rem;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            color: #888;
+        }
+
+        .framework-logo {
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+            display: block;
+        }
+
+        .comparison-table th, .comparison-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #444;
+        }
+
+        .comparison-table th {
+            background-color: #262639;
+            color: var(--accent-color);
+        }
+
+        .comparison-table tr:hover {
+            background-color: #33334d;
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="nav-brand">SHJ前端学习</div>
+        <ul class="nav-links">
+            <li><a href="index.html">首页</a></li>
+            <li><a href="index.html#about">关于网站</a></li>
+            <li><a href="index.html#services">学习资源</a></li>
+            <li><a href="index.html#contact">联系管理员</a></li>
+        </ul>
+    </nav>
+    
+    <!-- 内容区域 -->
+    <div class="content">
+        <h1 class="page-title">前端框架学习</h1>
+        
+        <div class="intro">
+            <h2>什么是前端框架？</h2>
+            <p>前端框架是一套用于构建用户界面的工具和库的集合，它们提供了一种组织和构建前端代码的结构化方式。现代前端框架通常采用组件化的开发方式，提高了代码的可维护性和复用性。当今最流行的前端框架包括React、Vue和Angular等，它们各有特点和适用场景。</p>
+        </div>
+        
+        <div class="topics">
+            <div class="topic-card">
+                <h3><i class="fab fa-react"></i> React</h3>
+                <p>React是由Facebook开发的JavaScript库，用于构建用户界面。其核心特点是组件化和虚拟DOM：</p>
+                <div class="code-example">
+                    <code>
+                        // React组件示例<br>
+                        import React from 'react';<br><br>
+                        
+                        function Welcome(props) {<br>
+                        &nbsp;&nbsp;return &lt;h1&gt;你好, {props.name}&lt;/h1&gt;;<br>
+                        }<br><br>
+                        
+                        // 使用Hook管理状态<br>
+                        import React, { useState } from 'react';<br><br>
+                        
+                        function Counter() {<br>
+                        &nbsp;&nbsp;const [count, setCount] = useState(0);<br><br>
+                        
+                        &nbsp;&nbsp;return (<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&lt;div&gt;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;你点击了 {count} 次&lt;/p&gt;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;button onClick={() => setCount(count + 1)}&gt;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;点击我<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/button&gt;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;<br>
+                        &nbsp;&nbsp;);<br>
+                        }
+                    </code>
+                </div>
+                <p>React是最流行的前端框架之一，拥有庞大的社区和生态系统。</p>
+            </div>
+            
+            <div class="topic-card">
+                <h3><i class="fab fa-vuejs"></i> Vue</h3>
+                <p>Vue是一个渐进式JavaScript框架，易于上手且灵活。它的特点是响应式数据绑定和组件化：</p>
+                <div class="code-example">
+                    <code>
+                        &lt;!-- Vue组件示例 --&gt;<br>
+                        &lt;template&gt;<br>
+                        &nbsp;&nbsp;&lt;div&gt;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&lt;h1&gt;{{ message }}&lt;/h1&gt;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&lt;button @click="reverseMessage"&gt;翻转消息&lt;/button&gt;<br>
+                        &nbsp;&nbsp;&lt;/div&gt;<br>
+                        &lt;/template&gt;<br><br>
+                        
+                        &lt;script&gt;<br>
+                        export default {<br>
+                        &nbsp;&nbsp;data() {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;return {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;message: 'Hello Vue!'<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+                        &nbsp;&nbsp;},<br>
+                        &nbsp;&nbsp;methods: {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;reverseMessage() {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.message = this.message.split('').reverse().join('')<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+                        &nbsp;&nbsp;}<br>
+                        }<br>
+                        &lt;/script&gt;
+                    </code>
+                </div>
+                <p>Vue以其简单的API和灵活性而受到开发者的喜爱。</p>
+            </div>
+            
+            <div class="topic-card">
+                <h3><i class="fab fa-angular"></i> Angular</h3>
+                <p>Angular是由Google维护的完整前端框架，它提供了一整套工具和功能：</p>
+                <div class="code-example">
+                    <code>
+                        // Angular组件示例<br>
+                        import { Component } from '@angular/core';<br><br>
+                        
+                        @Component({<br>
+                        &nbsp;&nbsp;selector: 'app-hello',<br>
+                        &nbsp;&nbsp;template: `<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&lt;h1&gt;Hello, {{name}}!&lt;/h1&gt;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&lt;button (click)="changeName()"&gt;改变名字&lt;/button&gt;<br>
+                        &nbsp;&nbsp;`<br>
+                        })<br>
+                        export class HelloComponent {<br>
+                        &nbsp;&nbsp;name = 'Angular';<br><br>
+                        
+                        &nbsp;&nbsp;changeName() {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;this.name = 'Angular学习者';<br>
+                        &nbsp;&nbsp;}<br>
+                        }
+                    </code>
+                </div>
+                <p>Angular是一个成熟的框架，适合构建大型企业级应用。</p>
+            </div>
+        </div>
+        
+        <div class="topic-card" style="margin-top: 2rem;">
+            <h3><i class="fas fa-balance-scale"></i> 框架对比</h3>
+            <p>各主流框架各有特点，选择哪个框架取决于项目需求和团队偏好：</p>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>特性</th>
+                        <th>React</th>
+                        <th>Vue</th>
+                        <th>Angular</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>学习曲线</td>
+                        <td>中等</td>
+                        <td>低</td>
+                        <td>高</td>
+                    </tr>
+                    <tr>
+                        <td>社区规模</td>
+                        <td>非常大</td>
+                        <td>大</td>
+                        <td>大</td>
+                    </tr>
+                    <tr>
+                        <td>适用项目</td>
+                        <td>中小型到大型</td>
+                        <td>小型到中大型</td>
+                        <td>中大型企业级</td>
+                    </tr>
+                    <tr>
+                        <td>性能</td>
+                        <td>优秀</td>
+                        <td>优秀</td>
+                        <td>良好</td>
+                    </tr>
+                    <tr>
+                        <td>开发公司</td>
+                        <td>Facebook</td>
+                        <td>个人开发者及社区</td>
+                        <td>Google</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="resources">
+            <h2>学习资源</h2>
+            <ul>
+                <li><a href="https://zh-hans.reactjs.org/" target="_blank">React 官方文档</a> - React官方中文文档</li>
+                <li><a href="https://cn.vuejs.org/" target="_blank">Vue 官方文档</a> - Vue官方中文文档</li>
+                <li><a href="https://angular.cn/" target="_blank">Angular 中文网站</a> - Angular中文官方文档</li>
+                <li><a href="https://www.ruanyifeng.com/blog/2015/03/react.html" target="_blank">React 入门实例教程</a> - 阮一峰的React教程</li>
+                <li><a href="https://github.com/vuejs/awesome-vue" target="_blank">Awesome Vue</a> - Vue相关资源集合</li>
+            </ul>
+        </div>
+        
+        <a href="index.html" class="back-btn">返回首页</a>
+    </div>
+    
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>关于本站</h3>
+                <p>前端学习实践项目，记录学习历程</p>
+            </div>
+            <div class="footer-section">
+                <h3>联系方式</h3>
+                <p>邮箱：534355052@qq.com</p>
+                <p>QQ群：18323483778</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 SHJ前端学习. 个人学习项目，保留所有权利。</p>
+        </div>
+    </footer>
+</body>
+</html> 

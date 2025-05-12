@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript学习 - SHJ前端学习</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2a2a4a;
+            --accent-color: #4a90e2;
+            --hover-color: #6ab0ff;
+            --text-color: #ffffff;
+            --dark-bg: #1a1a2e;
+            --card-bg: #2d2d44;
+            --light-text: #e0e0e0;
+            --code-bg: #2a2a3a;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
+        /* 导航栏样式 */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: rgba(26, 26, 46, 0.95);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+        
+        .nav-brand {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li a {
+            color: var(--text-color);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            margin: 0 0.5rem;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-links li a:hover {
+            color: var(--accent-color);
+        }
+        
+        /* 内容区域 */
+        .content {
+            max-width: 1200px;
+            margin: 100px auto 50px;
+            padding: 0 20px;
+        }
+        
+        .page-title {
+            color: var(--accent-color);
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2.5rem;
+        }
+        
+        .intro {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .intro h2 {
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+        
+        .topics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .topic-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .topic-card h3 {
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .topic-card h3 i {
+            margin-right: 0.5rem;
+        }
+        
+        .code-example {
+            background-color: var(--code-bg);
+            border-radius: 5px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .code-example code {
+            color: var(--light-text);
+        }
+        
+        .resources {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .resources h2 {
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+        
+        .resources ul {
+            list-style-type: none;
+        }
+        
+        .resources ul li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .resources ul li a {
+            color: var(--accent-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .resources ul li a:hover {
+            color: var(--hover-color);
+            text-decoration: underline;
+        }
+        
+        .back-btn {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background-color: var(--accent-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 2rem;
+            transition: background-color 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            background-color: var(--hover-color);
+        }
+        
+        /* 页脚 */
+        .footer {
+            background-color: var(--primary-color);
+            padding: 2rem 0;
+            margin-top: 4rem;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            padding: 0 2rem;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="nav-brand">SHJ前端学习</div>
+        <ul class="nav-links">
+            <li><a href="index.html">首页</a></li>
+            <li><a href="index.html#about">关于网站</a></li>
+            <li><a href="index.html#services">学习资源</a></li>
+            <li><a href="index.html#contact">联系管理员</a></li>
+        </ul>
+    </nav>
+    
+    <!-- 内容区域 -->
+    <div class="content">
+        <h1 class="page-title">JavaScript 学习</h1>
+        
+        <div class="intro">
+            <h2>什么是JavaScript？</h2>
+            <p>JavaScript是一种轻量级的、解释型的、面向对象的编程语言，是网页交互的核心技术。它可以使网页动态响应用户操作，实现复杂的交互功能。如今，JavaScript不仅可以运行在浏览器中，还可以通过Node.js在服务器端运行，成为了全栈开发的关键语言。</p>
+        </div>
+        
+        <div class="topics">
+            <div class="topic-card">
+                <h3><i class="fas fa-code"></i> JavaScript基础</h3>
+                <p>JavaScript的基础语法包括变量、数据类型、运算符和控制流等：</p>
+                <div class="code-example">
+                    <code>
+                        // 变量声明<br>
+                        let name = 'JavaScript学习';<br>
+                        const PI = 3.14159;<br>
+                        var oldWay = '旧的声明方式';<br><br>
+                        
+                        // 数据类型<br>
+                        let num = 100;               // 数字<br>
+                        let str = "Hello";           // 字符串<br>
+                        let bool = true;             // 布尔值<br>
+                        let arr = [1, 2, 3];         // 数组<br>
+                        let obj = {name: "小明"};    // 对象<br>
+                        let nothing = null;          // 空值<br>
+                        let undef;                   // undefined
+                    </code>
+                </div>
+                <p>了解这些基础概念是掌握JavaScript的第一步。</p>
+            </div>
+            
+            <div class="topic-card">
+                <h3><i class="fas fa-function"></i> 函数与事件</h3>
+                <p>JavaScript中的函数可以以多种方式定义，它们是代码复用和事件处理的关键：</p>
+                <div class="code-example">
+                    <code>
+                        // 函数声明<br>
+                        function sayHello(name) {<br>
+                        &nbsp;&nbsp;return `你好，${name}！`;<br>
+                        }<br><br>
+                        
+                        // 箭头函数<br>
+                        const multiply = (a, b) => a * b;<br><br>
+                        
+                        // 事件处理<br>
+                        document.getElementById('myButton').addEventListener('click', function() {<br>
+                        &nbsp;&nbsp;alert('按钮被点击了！');<br>
+                        });
+                    </code>
+                </div>
+                <p>函数是JavaScript中的一等公民，它们可以作为参数传递，也可以作为返回值。</p>
+            </div>
+            
+            <div class="topic-card">
+                <h3><i class="fas fa-laptop-code"></i> DOM操作</h3>
+                <p>DOM（文档对象模型）操作是JavaScript与网页交互的核心：</p>
+                <div class="code-example">
+                    <code>
+                        // 获取元素<br>
+                        const title = document.getElementById('title');<br>
+                        const paragraphs = document.querySelectorAll('p');<br><br>
+                        
+                        // 修改内容和样式<br>
+                        title.innerHTML = '新标题';<br>
+                        title.style.color = 'blue';<br><br>
+                        
+                        // 创建和添加元素<br>
+                        const newDiv = document.createElement('div');<br>
+                        newDiv.textContent = '这是新创建的元素';<br>
+                        document.body.appendChild(newDiv);
+                    </code>
+                </div>
+                <p>通过DOM操作，可以动态地修改网页内容和样式，实现交互效果。</p>
+            </div>
+        </div>
+        
+        <div class="resources">
+            <h2>学习资源</h2>
+            <ul>
+                <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript" target="_blank">MDN JavaScript 文档</a> - 权威的JavaScript参考资料</li>
+                <li><a href="https://zh.javascript.info/" target="_blank">现代JavaScript教程</a> - 从基础到高级的详细教程</li>
+                <li><a href="https://www.runoob.com/js/js-tutorial.html" target="_blank">菜鸟教程 JavaScript</a> - 简明易懂的JavaScript入门教程</li>
+                <li><a href="https://es6.ruanyifeng.com/" target="_blank">ECMAScript 6 入门</a> - 阮一峰的ES6教程</li>
+            </ul>
+        </div>
+        
+        <a href="index.html" class="back-btn">返回首页</a>
+    </div>
+    
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>关于本站</h3>
+                <p>前端学习实践项目，记录学习历程</p>
+            </div>
+            <div class="footer-section">
+                <h3>联系方式</h3>
+                <p>邮箱：534355052@qq.com</p>
+                <p>QQ群：18323483778</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 SHJ前端学习. 个人学习项目，保留所有权利。</p>
+        </div>
+    </footer>
+</body>
+</html> 

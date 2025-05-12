@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML/CSS学习 - SHJ前端学习</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2a2a4a;
+            --accent-color: #4a90e2;
+            --hover-color: #6ab0ff;
+            --text-color: #ffffff;
+            --dark-bg: #1a1a2e;
+            --card-bg: #2d2d44;
+            --light-text: #e0e0e0;
+            --code-bg: #2a2a3a;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
+        /* 导航栏样式 */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: rgba(26, 26, 46, 0.95);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+        
+        .nav-brand {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li a {
+            color: var(--text-color);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            margin: 0 0.5rem;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-links li a:hover {
+            color: var(--accent-color);
+        }
+        
+        /* 内容区域 */
+        .content {
+            max-width: 1200px;
+            margin: 100px auto 50px;
+            padding: 0 20px;
+        }
+        
+        .page-title {
+            color: var(--accent-color);
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2.5rem;
+        }
+        
+        .intro {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .intro h2 {
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+        
+        .topics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .topic-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .topic-card h3 {
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .topic-card h3 i {
+            margin-right: 0.5rem;
+        }
+        
+        .code-example {
+            background-color: var(--code-bg);
+            border-radius: 5px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .code-example code {
+            color: var(--light-text);
+        }
+        
+        .resources {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .resources h2 {
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+        
+        .resources ul {
+            list-style-type: none;
+        }
+        
+        .resources ul li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .resources ul li a {
+            color: var(--accent-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .resources ul li a:hover {
+            color: var(--hover-color);
+            text-decoration: underline;
+        }
+        
+        .back-btn {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background-color: var(--accent-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 2rem;
+            transition: background-color 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            background-color: var(--hover-color);
+        }
+        
+        /* 页脚 */
+        .footer {
+            background-color: var(--primary-color);
+            padding: 2rem 0;
+            margin-top: 4rem;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            padding: 0 2rem;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="nav-brand">SHJ前端学习</div>
+        <ul class="nav-links">
+            <li><a href="index.html">首页</a></li>
+            <li><a href="index.html#about">关于网站</a></li>
+            <li><a href="index.html#services">学习资源</a></li>
+            <li><a href="index.html#contact">联系管理员</a></li>
+        </ul>
+    </nav>
+    
+    <!-- 内容区域 -->
+    <div class="content">
+        <h1 class="page-title">HTML/CSS 学习</h1>
+        
+        <div class="intro">
+            <h2>什么是HTML和CSS？</h2>
+            <p>HTML（超文本标记语言）是网页的基础结构，它定义了网页的内容和基本布局。CSS（层叠样式表）则负责控制网页的外观和样式，包括颜色、字体、布局等。这两种语言是前端开发的基础，掌握它们是成为前端开发者的第一步。</p>
+        </div>
+        
+        <div class="topics">
+            <div class="topic-card">
+                <h3><i class="fas fa-sitemap"></i> HTML基础</h3>
+                <p>HTML是一种标记语言，使用各种标签来定义网页结构。以下是一些基本的HTML标签：</p>
+                <div class="code-example">
+                    <code>
+                        &lt;!DOCTYPE html&gt;<br>
+                        &lt;html&gt;<br>
+                        &lt;head&gt;<br>
+                        &nbsp;&nbsp;&lt;title&gt;我的第一个网页&lt;/title&gt;<br>
+                        &lt;/head&gt;<br>
+                        &lt;body&gt;<br>
+                        &nbsp;&nbsp;&lt;h1&gt;这是一个标题&lt;/h1&gt;<br>
+                        &nbsp;&nbsp;&lt;p&gt;这是一个段落。&lt;/p&gt;<br>
+                        &lt;/body&gt;<br>
+                        &lt;/html&gt;
+                    </code>
+                </div>
+                <p>这是一个基本的HTML文档结构，包含了头部和正文内容。</p>
+            </div>
+            
+            <div class="topic-card">
+                <h3><i class="fas fa-paint-brush"></i> CSS基础</h3>
+                <p>CSS用于为HTML元素添加样式。CSS可以通过多种方式应用到HTML中：</p>
+                <div class="code-example">
+                    <code>
+                        /* 内联样式 */<br>
+                        &lt;p style="color: blue;"&gt;这是蓝色文本&lt;/p&gt;<br><br>
+                        
+                        /* 内部样式表 */<br>
+                        &lt;style&gt;<br>
+                        &nbsp;&nbsp;p {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;color: red;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;font-size: 16px;<br>
+                        &nbsp;&nbsp;}<br>
+                        &lt;/style&gt;<br><br>
+                        
+                        /* 外部样式表 */<br>
+                        &lt;link rel="stylesheet" href="styles.css"&gt;
+                    </code>
+                </div>
+                <p>CSS使用选择器定位HTML元素，然后应用样式规则。</p>
+            </div>
+            
+            <div class="topic-card">
+                <h3><i class="fas fa-th"></i> 布局技术</h3>
+                <p>现代CSS提供了多种布局技术，包括：</p>
+                <ul>
+                    <li>Flexbox布局</li>
+                    <li>Grid网格布局</li>
+                    <li>响应式布局</li>
+                    <li>盒模型</li>
+                </ul>
+                <div class="code-example">
+                    <code>
+                        /* Flexbox示例 */<br>
+                        .container {<br>
+                        &nbsp;&nbsp;display: flex;<br>
+                        &nbsp;&nbsp;justify-content: space-between;<br>
+                        &nbsp;&nbsp;align-items: center;<br>
+                        }
+                    </code>
+                </div>
+                <p>Flexbox和Grid是现代网页布局的主要工具，它们提供了强大且灵活的布局能力。</p>
+            </div>
+        </div>
+        
+        <div class="resources">
+            <h2>学习资源</h2>
+            <ul>
+                <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/HTML" target="_blank">MDN HTML 文档</a> - Mozilla开发者网络的HTML文档，非常全面</li>
+                <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/CSS" target="_blank">MDN CSS 文档</a> - 深入学习CSS的最佳资源</li>
+                <li><a href="https://www.w3school.com.cn/html/index.asp" target="_blank">W3School HTML 教程</a> - 中文HTML入门教程</li>
+                <li><a href="https://www.w3school.com.cn/css/index.asp" target="_blank">W3School CSS 教程</a> - 中文CSS入门教程</li>
+            </ul>
+        </div>
+        
+        <a href="index.html" class="back-btn">返回首页</a>
+    </div>
+    
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>关于本站</h3>
+                <p>前端学习实践项目，记录学习历程</p>
+            </div>
+            <div class="footer-section">
+                <h3>联系方式</h3>
+                <p>邮箱：534355052@qq.com</p>
+                <p>QQ群：18323483778</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 SHJ前端学习. 个人学习项目，保留所有权利。</p>
+        </div>
+    </footer>
+</body>
+</html> 

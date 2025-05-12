@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>响应式设计 - SHJ前端学习</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2a2a4a;
+            --accent-color: #4a90e2;
+            --hover-color: #6ab0ff;
+            --text-color: #ffffff;
+            --dark-bg: #1a1a2e;
+            --card-bg: #2d2d44;
+            --light-text: #e0e0e0;
+            --code-bg: #2a2a3a;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
+        /* 导航栏样式 */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: rgba(26, 26, 46, 0.95);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+        
+        .nav-brand {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li a {
+            color: var(--text-color);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            margin: 0 0.5rem;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-links li a:hover {
+            color: var(--accent-color);
+        }
+        
+        /* 内容区域 */
+        .content {
+            max-width: 1200px;
+            margin: 100px auto 50px;
+            padding: 0 20px;
+        }
+        
+        .page-title {
+            color: var(--accent-color);
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2.5rem;
+        }
+        
+        .intro {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .intro h2 {
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+        
+        .topics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .topic-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .topic-card h3 {
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .topic-card h3 i {
+            margin-right: 0.5rem;
+        }
+        
+        .code-example {
+            background-color: var(--code-bg);
+            border-radius: 5px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .code-example code {
+            color: var(--light-text);
+        }
+        
+        .resources {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .resources h2 {
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+        
+        .resources ul {
+            list-style-type: none;
+        }
+        
+        .resources ul li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .resources ul li a {
+            color: var(--accent-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .resources ul li a:hover {
+            color: var(--hover-color);
+            text-decoration: underline;
+        }
+        
+        .back-btn {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background-color: var(--accent-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 2rem;
+            transition: background-color 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            background-color: var(--hover-color);
+        }
+        
+        /* 页脚 */
+        .footer {
+            background-color: var(--primary-color);
+            padding: 2rem 0;
+            margin-top: 4rem;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            padding: 0 2rem;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            color: #888;
+        }
+
+        /* 响应式演示区域 */
+        .demo-section {
+            margin: 2rem 0;
+        }
+
+        .responsive-demo {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            overflow: hidden;
+        }
+
+        .demo-devices {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin: 2rem 0;
+        }
+
+        .device {
+            text-align: center;
+            padding: 1rem;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .device i {
+            font-size: 3rem;
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+
+        .device-content {
+            border: 2px solid var(--accent-color);
+            border-radius: 5px;
+            height: 150px;
+            margin-top: 1rem;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .breakpoints-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+            display: block;
+        }
+
+        .breakpoints-table th, .breakpoints-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #444;
+        }
+
+        .breakpoints-table th {
+            background-color: #262639;
+            color: var(--accent-color);
+        }
+
+        .breakpoints-table tr:hover {
+            background-color: #33334d;
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="nav-brand">SHJ前端学习</div>
+        <ul class="nav-links">
+            <li><a href="index.html">首页</a></li>
+            <li><a href="index.html#about">关于网站</a></li>
+            <li><a href="index.html#services">学习资源</a></li>
+            <li><a href="index.html#contact">联系管理员</a></li>
+        </ul>
+    </nav>
+    
+    <!-- 内容区域 -->
+    <div class="content">
+        <h1 class="page-title">响应式设计</h1>
+        
+        <div class="intro">
+            <h2>什么是响应式设计？</h2>
+            <p>响应式网页设计（Responsive Web Design，简称RWD）是一种网页设计方法，使得同一个网站能够适应不同设备和屏幕尺寸。无论是在桌面电脑、平板还是手机上，网页都能自动调整布局和内容，为用户提供最佳的浏览体验。</p>
+            <p>响应式设计的核心理念是"设计一次，运行各处"，这大大节省了开发和维护多个版本网站的成本。</p>
+        </div>
+        
+        <div class="topics">
+            <div class="topic-card">
+                <h3><i class="fas fa-mobile-alt"></i> 响应式设计基础</h3>
+                <p>响应式设计的三个核心技术是：</p>
+                <ul>
+                    <li>流体网格（Fluid Grid）</li>
+                    <li>灵活图片（Flexible Images）</li>
+                    <li>媒体查询（Media Queries）</li>
+                </ul>
+                <div class="code-example">
+                    <code>
+                        /* 媒体查询示例 */<br>
+                        /* 默认样式 (适用于所有设备) */<br>
+                        .container {<br>
+                        &nbsp;&nbsp;width: 100%;<br>
+                        &nbsp;&nbsp;padding: 15px;<br>
+                        }<br><br>
+                        
+                        /* 平板设备 */<br>
+                        @media (min-width: 768px) {<br>
+                        &nbsp;&nbsp;.container {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;max-width: 750px;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;margin: 0 auto;<br>
+                        &nbsp;&nbsp;}<br>
+                        }<br><br>
+                        
+                        /* 桌面设备 */<br>
+                        @media (min-width: 1200px) {<br>
+                        &nbsp;&nbsp;.container {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;max-width: 1170px;<br>
+                        &nbsp;&nbsp;}<br>
+                        }
+                    </code>
+                </div>
+                <p>媒体查询允许我们根据设备特性（如屏幕宽度）应用不同的CSS样式。</p>
+            </div>
+            
+            <div class="topic-card">
+                <h3><i class="fas fa-percentage"></i> 相对单位</h3>
+                <p>在响应式设计中，使用相对单位比固定像素更有优势：</p>
+                <div class="code-example">
+                    <code>
+                        /* 不推荐: 使用绝对单位 */<br>
+                        .header {<br>
+                        &nbsp;&nbsp;width: 960px;<br>
+                        &nbsp;&nbsp;font-size: 18px;<br>
+                        }<br><br>
+                        
+                        /* 推荐: 使用相对单位 */<br>
+                        .header {<br>
+                        &nbsp;&nbsp;width: 100%;<br>
+                        &nbsp;&nbsp;font-size: 1.125rem; /* 18px/16px = 1.125 */<br>
+                        }<br><br>
+                        
+                        /* 常用相对单位 */<br>
+                        /* % - 相对于父元素 */<br>
+                        /* em - 相对于元素的字体大小 */<br>
+                        /* rem - 相对于根元素的字体大小 */<br>
+                        /* vw - 视口宽度的1% */<br>
+                        /* vh - 视口高度的1% */
+                    </code>
+                </div>
+                <p>使用相对单位可以使页面元素按比例缩放，适应不同屏幕尺寸。</p>
+            </div>
+            
+            <div class="topic-card">
+                <h3><i class="fas fa-th"></i> 响应式布局技术</h3>
+                <p>现代CSS提供了多种响应式布局技术：</p>
+                <div class="code-example">
+                    <code>
+                        /* Flexbox布局 */<br>
+                        .flex-container {<br>
+                        &nbsp;&nbsp;display: flex;<br>
+                        &nbsp;&nbsp;flex-wrap: wrap; /* 允许项目换行 */<br>
+                        }<br><br>
+                        
+                        /* Grid布局 */<br>
+                        .grid-container {<br>
+                        &nbsp;&nbsp;display: grid;<br>
+                        &nbsp;&nbsp;grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));<br>
+                        &nbsp;&nbsp;gap: 20px;<br>
+                        }<br><br>
+                        
+                        /* 这两种布局方式都大大简化了响应式设计的实现 */
+                    </code>
+                </div>
+                <p>Flexbox和Grid是实现响应式布局的强大工具，它们让复杂的布局变得简单。</p>
+            </div>
+        </div>
+        
+        <div class="demo-section">
+            <h2 class="section-title">常见断点</h2>
+            <div class="responsive-demo">
+                <p>响应式设计通常会设置断点（Breakpoints），在不同屏幕宽度应用不同样式。以下是常见的断点：</p>
+                <table class="breakpoints-table">
+                    <thead>
+                        <tr>
+                            <th>设备类型</th>
+                            <th>断点</th>
+                            <th>描述</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>手机（小屏）</td>
+                            <td>< 576px</td>
+                            <td>小型手机设备</td>
+                        </tr>
+                        <tr>
+                            <td>手机（大屏）</td>
+                            <td>≥ 576px</td>
+                            <td>大屏手机、小型平板</td>
+                        </tr>
+                        <tr>
+                            <td>平板</td>
+                            <td>≥ 768px</td>
+                            <td>平板设备、小型笔记本</td>
+                        </tr>
+                        <tr>
+                            <td>桌面</td>
+                            <td>≥ 992px</td>
+                            <td>笔记本电脑、台式机</td>
+                        </tr>
+                        <tr>
+                            <td>大屏桌面</td>
+                            <td>≥ 1200px</td>
+                            <td>大屏幕设备</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p>这些断点和尺寸可以根据项目需求进行调整，不必严格遵循。</p>
+            </div>
+            
+            <h2 class="section-title">响应式布局演示</h2>
+            <div class="responsive-demo">
+                <p>不同设备上的布局调整示意：</p>
+                <div class="demo-devices">
+                    <div class="device">
+                        <i class="fas fa-mobile-alt"></i>
+                        <h4>手机</h4>
+                        <div class="device-content">
+                            <div style="width: 80%; height: 20px; background-color: var(--accent-color); margin-bottom: 10px;"></div>
+                            <div style="width: 80%; height: 60px; background-color: var(--accent-color); opacity: 0.7;"></div>
+                        </div>
+                        <p>单列布局</p>
+                    </div>
+                    <div class="device">
+                        <i class="fas fa-tablet-alt"></i>
+                        <h4>平板</h4>
+                        <div class="device-content">
+                            <div style="display: flex; width: 90%; justify-content: space-between;">
+                                <div style="width: 45%; height: 80px; background-color: var(--accent-color);"></div>
+                                <div style="width: 45%; height: 80px; background-color: var(--accent-color); opacity: 0.7;"></div>
+                            </div>
+                        </div>
+                        <p>双列布局</p>
+                    </div>
+                    <div class="device">
+                        <i class="fas fa-desktop"></i>
+                        <h4>桌面</h4>
+                        <div class="device-content">
+                            <div style="display: flex; width: 90%; justify-content: space-between;">
+                                <div style="width: 30%; height: 80px; background-color: var(--accent-color);"></div>
+                                <div style="width: 30%; height: 80px; background-color: var(--accent-color); opacity: 0.8;"></div>
+                                <div style="width: 30%; height: 80px; background-color: var(--accent-color); opacity: 0.6;"></div>
+                            </div>
+                        </div>
+                        <p>多列布局</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="resources">
+            <h2>学习资源</h2>
+            <ul>
+                <li><a href="https://developer.mozilla.org/zh-CN/docs/Learn/CSS/CSS_layout/Responsive_Design" target="_blank">MDN 响应式设计</a> - 全面的响应式设计指南</li>
+                <li><a href="https://www.w3schools.com/css/css_rwd_intro.asp" target="_blank">W3Schools 响应式设计教程</a> - 入门级教程</li>
+                <li><a href="https://web.dev/responsive-web-design-basics/" target="_blank">Google 响应式设计基础</a> - Google开发者资源</li>
+                <li><a href="https://css-tricks.com/snippets/css/a-guide-to-flexbox/" target="_blank">Flexbox完全指南</a> - CSS-Tricks提供的详细指南</li>
+                <li><a href="https://css-tricks.com/snippets/css/complete-guide-grid/" target="_blank">Grid完全指南</a> - CSS-Tricks提供的Grid布局指南</li>
+            </ul>
+        </div>
+        
+        <a href="index.html" class="back-btn">返回首页</a>
+    </div>
+    
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>关于本站</h3>
+                <p>前端学习实践项目，记录学习历程</p>
+            </div>
+            <div class="footer-section">
+                <h3>联系方式</h3>
+                <p>邮箱：534355052@qq.com</p>
+                <p>QQ群：18323483778</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 SHJ前端学习. 个人学习项目，保留所有权利。</p>
+        </div>
+    </footer>
+</body>
+</html> 

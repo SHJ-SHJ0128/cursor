@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>项目实战 - SHJ前端学习</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2a2a4a;
+            --accent-color: #4a90e2;
+            --hover-color: #6ab0ff;
+            --text-color: #ffffff;
+            --dark-bg: #1a1a2e;
+            --card-bg: #2d2d44;
+            --light-text: #e0e0e0;
+            --code-bg: #2a2a3a;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
+        /* 导航栏样式 */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: rgba(26, 26, 46, 0.95);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+        
+        .nav-brand {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li a {
+            color: var(--text-color);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            margin: 0 0.5rem;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-links li a:hover {
+            color: var(--accent-color);
+        }
+        
+        /* 内容区域 */
+        .content {
+            max-width: 1200px;
+            margin: 100px auto 50px;
+            padding: 0 20px;
+        }
+        
+        .page-title {
+            color: var(--accent-color);
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2.5rem;
+        }
+        
+        .intro {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .intro h2 {
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+        
+        .topics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .topic-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .topic-card h3 {
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .topic-card h3 i {
+            margin-right: 0.5rem;
+        }
+        
+        .code-example {
+            background-color: var(--code-bg);
+            border-radius: 5px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .code-example code {
+            color: var(--light-text);
+        }
+        
+        .resources {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .resources h2 {
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+        
+        .resources ul {
+            list-style-type: none;
+        }
+        
+        .resources ul li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .resources ul li a {
+            color: var(--accent-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .resources ul li a:hover {
+            color: var(--hover-color);
+            text-decoration: underline;
+        }
+        
+        .back-btn {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background-color: var(--accent-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 2rem;
+            transition: background-color 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            background-color: var(--hover-color);
+        }
+        
+        /* 页脚 */
+        .footer {
+            background-color: var(--primary-color);
+            padding: 2rem 0;
+            margin-top: 4rem;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            padding: 0 2rem;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            color: #888;
+        }
+
+        /* 项目展示卡片 */
+        .project-showcase {
+            margin: 2rem 0;
+        }
+
+        .project-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .project-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .project-icon {
+            font-size: 2rem;
+            color: var(--accent-color);
+            margin-right: 1rem;
+        }
+
+        .project-title {
+            font-size: 1.5rem;
+            color: var(--accent-color);
+        }
+
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 1rem 0;
+        }
+
+        .project-tag {
+            background-color: rgba(74, 144, 226, 0.2);
+            color: var(--accent-color);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .project-links {
+            margin-top: 1rem;
+        }
+
+        .project-link {
+            display: inline-block;
+            background-color: rgba(74, 144, 226, 0.1);
+            color: var(--accent-color);
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            margin-right: 1rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .project-link:hover {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        /* 步骤列表 */
+        .steps-list {
+            margin: 1.5rem 0;
+        }
+
+        .step-item {
+            display: flex;
+            margin-bottom: 1.5rem;
+        }
+
+        .step-number {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--accent-color);
+            margin-right: 1rem;
+            min-width: 30px;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-title {
+            font-size: 1.1rem;
+            color: var(--accent-color);
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="nav-brand">SHJ前端学习</div>
+        <ul class="nav-links">
+            <li><a href="index.html">首页</a></li>
+            <li><a href="index.html#about">关于网站</a></li>
+            <li><a href="index.html#services">学习资源</a></li>
+            <li><a href="index.html#contact">联系管理员</a></li>
+        </ul>
+    </nav>
+    
+    <!-- 内容区域 -->
+    <div class="content">
+        <h1 class="page-title">项目实战</h1>
+        
+        <div class="intro">
+            <h2>前端项目实战</h2>
+            <p>通过实际项目的构建和部署，是提升前端开发能力的最有效方式。在项目实战中，你会遇到各种实际问题，这些经验将帮助你成为更优秀的前端开发者。本页面提供了一些项目实战的思路、工具和最佳实践，帮助你从构思到部署完成一个完整的前端项目。</p>
+        </div>
+        
+        <div class="topics">
+            <div class="topic-card">
+                <h3><i class="fas fa-tasks"></i> 项目规划与管理</h3>
+                <p>一个成功的项目始于良好的规划：</p>
+                <div class="steps-list">
+                    <div class="step-item">
+                        <div class="step-number">1.</div>
+                        <div class="step-content">
+                            <div class="step-title">明确项目需求</div>
+                            <p>定义项目的目标、功能、用户群体和预期效果</p>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">2.</div>
+                        <div class="step-content">
+                            <div class="step-title">技术选型</div>
+                            <p>根据项目需求选择合适的前端框架、库和工具</p>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">3.</div>
+                        <div class="step-content">
+                            <div class="step-title">制定时间表</div>
+                            <p>将项目拆分为小任务，设定合理的完成时间</p>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">4.</div>
+                        <div class="step-content">
+                            <div class="step-title">版本控制与协作</div>
+                            <p>使用Git进行版本控制，如果是团队项目，确保良好的协作流程</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="topic-card">
+                <h3><i class="fas fa-tools"></i> 开发环境搭建</h3>
+                <p>现代前端项目通常需要搭建一个良好的开发环境：</p>
+                <div class="code-example">
+                    <code>
+                        # 使用Create React App创建项目<br>
+                        npx create-react-app my-project<br><br>
+                        
+                        # 使用Vue CLI创建项目<br>
+                        npm install -g @vue/cli<br>
+                        vue create my-project<br><br>
+                        
+                        # 使用Vite创建项目<br>
+                        npm create vite@latest my-project -- --template react<br>
+                        # 或者<br>
+                        npm create vite@latest my-project -- --template vue
+                    </code>
+                </div>
+                <p>这些工具可以帮助你快速搭建一个配置完善的开发环境，包含构建工具、热重载、代码规范等。</p>
+            </div>
+            
+            <div class="topic-card">
+                <h3><i class="fas fa-globe"></i> 项目部署</h3>
+                <p>将你的前端项目部署到互联网上，让所有人都能访问：</p>
+                <div class="code-example">
+                    <code>
+                        # 构建生产环境版本<br>
+                        npm run build<br><br>
+                        
+                        # 使用GitHub Pages部署（在package.json中添加）<br>
+                        "scripts": {<br>
+                        &nbsp;&nbsp;"deploy": "gh-pages -d build"<br>
+                        }<br><br>
+                        
+                        # 安装gh-pages并部署<br>
+                        npm install gh-pages --save-dev<br>
+                        npm run deploy<br><br>
+                        
+                        # 使用Netlify CLI部署<br>
+                        npm install netlify-cli -g<br>
+                        netlify deploy
+                    </code>
+                </div>
+                <p>除了GitHub Pages和Netlify，还有Vercel、Surge等服务也提供了便捷的前端部署解决方案。</p>
+            </div>
+        </div>
+        
+        <div class="project-showcase">
+            <h2 class="section-title">项目实例</h2>
+            
+            <div class="project-card">
+                <div class="project-header">
+                    <div class="project-icon"><i class="fas fa-shopping-cart"></i></div>
+                    <div class="project-title">电子商务网站</div>
+                </div>
+                <p>构建一个包含商品展示、购物车、结账流程的电子商务网站。</p>
+                <div class="project-tags">
+                    <span class="project-tag">React</span>
+                    <span class="project-tag">Redux</span>
+                    <span class="project-tag">Firebase</span>
+                    <span class="project-tag">支付集成</span>
+                </div>
+                <p>这个项目可以帮助你学习状态管理、API集成、表单处理和支付流程实现。</p>
+                <div class="project-links">
+                    <a href="https://github.com/topics/e-commerce" target="_blank" class="project-link"><i class="fab fa-github"></i> 示例代码</a>
+                    <a href="https://www.youtube.com/results?search_query=react+ecommerce+tutorial" target="_blank" class="project-link"><i class="fab fa-youtube"></i> 视频教程</a>
+                </div>
+            </div>
+            
+            <div class="project-card">
+                <div class="project-header">
+                    <div class="project-icon"><i class="fas fa-tasks"></i></div>
+                    <div class="project-title">任务管理应用</div>
+                </div>
+                <p>开发一个功能齐全的任务管理应用，包括任务创建、编辑、分类、搜索和过滤功能。</p>
+                <div class="project-tags">
+                    <span class="project-tag">Vue</span>
+                    <span class="project-tag">Vuex</span>
+                    <span class="project-tag">LocalStorage</span>
+                </div>
+                <p>这个项目适合学习组件通信、本地存储和状态管理。</p>
+                <div class="project-links">
+                    <a href="https://github.com/topics/todo-app" target="_blank" class="project-link"><i class="fab fa-github"></i> 示例代码</a>
+                    <a href="https://vuejs.org/examples/#todomvc" target="_blank" class="project-link"><i class="fas fa-external-link-alt"></i> 在线演示</a>
+                </div>
+            </div>
+            
+            <div class="project-card">
+                <div class="project-header">
+                    <div class="project-icon"><i class="fas fa-chart-line"></i></div>
+                    <div class="project-title">数据可视化仪表盘</div>
+                </div>
+                <p>创建一个交互式数据仪表盘，展示统计数据、图表和可过滤的数据表格。</p>
+                <div class="project-tags">
+                    <span class="project-tag">D3.js</span>
+                    <span class="project-tag">Chart.js</span>
+                    <span class="project-tag">React/Angular</span>
+                    <span class="project-tag">REST API</span>
+                </div>
+                <p>这个项目将帮助你学习数据可视化、数据获取和动态UI更新。</p>
+                <div class="project-links">
+                    <a href="https://github.com/topics/dashboard" target="_blank" class="project-link"><i class="fab fa-github"></i> 示例代码</a>
+                    <a href="https://www.freecodecamp.org/news/how-to-build-a-react-dashboard-project/" target="_blank" class="project-link"><i class="fas fa-book"></i> 教程</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="resources">
+            <h2>学习资源</h2>
+            <ul>
+                <li><a href="https://www.freecodecamp.org/news/tag/projects/" target="_blank">FreeCodeCamp 项目教程</a> - 从零开始的项目构建教程</li>
+                <li><a href="https://github.com/bradtraversy/50projects50days" target="_blank">50 Projects In 50 Days</a> - 50个小型前端项目示例</li>
+                <li><a href="https://github.com/florinpop17/app-ideas" target="_blank">App Ideas</a> - 各种难度级别的应用构想</li>
+                <li><a href="https://www.netlify.com/blog/" target="_blank">Netlify Blog</a> - 部署相关的最佳实践</li>
+                <li><a href="https://www.frontendmentor.io/" target="_blank">Frontend Mentor</a> - 提供实际设计稿的前端挑战</li>
+            </ul>
+        </div>
+        
+        <a href="index.html" class="back-btn">返回首页</a>
+    </div>
+    
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>关于本站</h3>
+                <p>前端学习实践项目，记录学习历程</p>
+            </div>
+            <div class="footer-section">
+                <h3>联系方式</h3>
+                <p>邮箱：534355052@qq.com</p>
+                <p>QQ群：18323483778</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 SHJ前端学习. 个人学习项目，保留所有权利。</p>
+        </div>
+    </footer>
+</body>
+</html> 

@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学习笔记 - SHJ前端学习</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2a2a4a;
+            --accent-color: #4a90e2;
+            --hover-color: #6ab0ff;
+            --text-color: #ffffff;
+            --dark-bg: #1a1a2e;
+            --card-bg: #2d2d44;
+            --light-text: #e0e0e0;
+            --code-bg: #2a2a3a;
+            --note-bg: #2c2c50;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
+        /* 导航栏样式 */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: rgba(26, 26, 46, 0.95);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+        
+        .nav-brand {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li a {
+            color: var(--text-color);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            margin: 0 0.5rem;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-links li a:hover {
+            color: var(--accent-color);
+        }
+        
+        /* 内容区域 */
+        .content {
+            max-width: 1200px;
+            margin: 100px auto 50px;
+            padding: 0 20px;
+        }
+        
+        .page-title {
+            color: var(--accent-color);
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2.5rem;
+        }
+        
+        .intro {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .intro h2 {
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+
+        /* 笔记样式 */
+        .notes-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .note-card {
+            background-color: var(--note-bg);
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-top: 4px solid var(--accent-color);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .note-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        .note-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 0.5rem;
+        }
+        
+        .note-title {
+            font-size: 1.25rem;
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+        
+        .note-date {
+            font-size: 0.8rem;
+            color: #999;
+        }
+        
+        .note-content {
+            margin-bottom: 1rem;
+        }
+        
+        .note-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .note-tag {
+            font-size: 0.75rem;
+            padding: 0.2rem 0.6rem;
+            background-color: rgba(74, 144, 226, 0.2);
+            color: var(--accent-color);
+            border-radius: 20px;
+        }
+
+        .highlight {
+            background-color: rgba(255, 255, 0, 0.15);
+            padding: 0 3px;
+            border-radius: 3px;
+        }
+
+        /* 引用块样式 */
+        blockquote {
+            border-left: 4px solid var(--accent-color);
+            padding-left: 1rem;
+            margin: 1rem 0;
+            font-style: italic;
+            color: #ccc;
+        }
+        
+        .resources {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .resources h2 {
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+        
+        .resources ul {
+            list-style-type: none;
+        }
+        
+        .resources ul li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .resources ul li a {
+            color: var(--accent-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .resources ul li a:hover {
+            color: var(--hover-color);
+            text-decoration: underline;
+        }
+        
+        .back-btn {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background-color: var(--accent-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 2rem;
+            transition: background-color 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            background-color: var(--hover-color);
+        }
+        
+        /* 页脚 */
+        .footer {
+            background-color: var(--primary-color);
+            padding: 2rem 0;
+            margin-top: 4rem;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            padding: 0 2rem;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            color: #888;
+        }
+
+        /* 代码样式 */
+        .code-snippet {
+            background-color: var(--code-bg);
+            border-radius: 5px;
+            padding: 1rem;
+            margin: 1rem 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="nav-brand">SHJ前端学习</div>
+        <ul class="nav-links">
+            <li><a href="index.html">首页</a></li>
+            <li><a href="index.html#about">关于网站</a></li>
+            <li><a href="index.html#services">学习资源</a></li>
+            <li><a href="index.html#contact">联系管理员</a></li>
+        </ul>
+    </nav>
+    
+    <!-- 内容区域 -->
+    <div class="content">
+        <h1 class="page-title">学习笔记</h1>
+        
+        <div class="intro">
+            <h2>前端学习心得</h2>
+            <p>这里记录了我在前端学习过程中的心得体会、技巧总结和一些易错知识点。这些笔记是我学习过程中的点滴积累，希望能对你也有所帮助。</p>
+            <p>学习编程最重要的是实践，所以我尽量在每个笔记中都附上实际案例和代码片段，以便更好地理解和应用。</p>
+        </div>
+        
+        <div class="notes-container">
+            <div class="note-card">
+                <div class="note-header">
+                    <div class="note-title">CSS盒模型详解</div>
+                    <div class="note-date">2024-03-15</div>
+                </div>
+                <div class="note-content">
+                    <p>今天深入学习了CSS盒模型，理解了<span class="highlight">content-box</span>和<span class="highlight">border-box</span>的区别。</p>
+                    
+                    <blockquote>
+                        盒模型是CSS中的一个核心概念，它描述了元素内容、内边距、边框和外边距如何一起决定元素的总体大小。
+                    </blockquote>
+                    
+                    <p>默认情况下，浏览器使用标准盒模型（content-box），元素的width和height只包括内容区域。使用border-box更符合直觉，因为它包括内容、内边距和边框。</p>
+                    
+                    <div class="code-snippet">
+                        /* 设置所有元素使用border-box */
+                        * {
+                          box-sizing: border-box;
+                        }
+                    </div>
+                    
+                    <p>通过使用border-box，可以更容易地控制元素大小，尤其是在复杂布局中。</p>
+                </div>
+                <div class="note-tags">
+                    <span class="note-tag">CSS</span>
+                    <span class="note-tag">盒模型</span>
+                    <span class="note-tag">布局</span>
+                </div>
+            </div>
+            
+            <div class="note-card">
+                <div class="note-header">
+                    <div class="note-title">JavaScript作用域理解</div>
+                    <div class="note-date">2024-03-20</div>
+                </div>
+                <div class="note-content">
+                    <p>今天学习了JavaScript的作用域和闭包，这是前端开发中非常重要的概念。</p>
+                    
+                    <p>JavaScript有三种作用域类型：</p>
+                    <ul>
+                        <li>全局作用域</li>
+                        <li>函数作用域</li>
+                        <li>块级作用域（ES6新增）</li>
+                    </ul>
+                    
+                    <div class="code-snippet">
+                        // 全局作用域
+                        const globalVar = '我在全局可见';
+                        
+                        function exampleFunction() {
+                          // 函数作用域
+                          const functionVar = '我只在函数内可见';
+                          
+                          if (true) {
+                            // 块级作用域
+                            let blockVar = '我只在if块内可见';
+                            var functionScopedVar = '我在整个函数内可见';
+                          }
+                          
+                          console.log(functionScopedVar); // 可以访问
+                          //console.log(blockVar); // 错误：blockVar未定义
+                        }
+                    </div>
+                    
+                    <p>理解闭包是JavaScript高级应用的关键，它允许函数访问并操作函数外部的变量。</p>
+                </div>
+                <div class="note-tags">
+                    <span class="note-tag">JavaScript</span>
+                    <span class="note-tag">作用域</span>
+                    <span class="note-tag">闭包</span>
+                </div>
+            </div>
+            
+            <div class="note-card">
+                <div class="note-header">
+                    <div class="note-title">Flexbox布局技巧</div>
+                    <div class="note-date">2024-03-25</div>
+                </div>
+                <div class="note-content">
+                    <p>Flexbox是我最喜欢的CSS布局方式之一，今天总结了一些实用技巧。</p>
+                    
+                    <p>居中元素的最简单方法：</p>
+                    <div class="code-snippet">
+                        .container {
+                          display: flex;
+                          justify-content: center;
+                          align-items: center;
+                          height: 100vh; /* 视口高度 */
+                        }
+                    </div>
+                    
+                    <p>创建灵活的导航栏：</p>
+                    <div class="code-snippet">
+                        nav {
+                          display: flex;
+                          justify-content: space-between;
+                        }
+                        
+                        .nav-links {
+                          display: flex;
+                          gap: 20px;
+                        }
+                    </div>
+                    
+                    <p>一个常见的问题是在不同设备上保持布局的响应性。使用<span class="highlight">flex-wrap: wrap</span>可以让元素在空间不足时自动换行。</p>
+                </div>
+                <div class="note-tags">
+                    <span class="note-tag">CSS</span>
+                    <span class="note-tag">Flexbox</span>
+                    <span class="note-tag">响应式</span>
+                </div>
+            </div>
+            
+            <div class="note-card">
+                <div class="note-header">
+                    <div class="note-title">React Hooks使用心得</div>
+                    <div class="note-date">2024-04-02</div>
+                </div>
+                <div class="note-content">
+                    <p>今天深入学习了React Hooks，特别是<span class="highlight">useState</span>和<span class="highlight">useEffect</span>。</p>
+                    
+                    <p>useState用于在函数组件中添加状态：</p>
+                    <div class="code-snippet">
+                        function Counter() {
+                          const [count, setCount] = useState(0);
+                          
+                          return (
+                            &lt;div&gt;
+                              &lt;p&gt;You clicked {count} times&lt;/p&gt;
+                              &lt;button onClick={() => setCount(count + 1)}&gt;
+                                Click me
+                              &lt;/button&gt;
+                            &lt;/div&gt;
+                          );
+                        }
+                    </div>
+                    
+                    <p>useEffect用于处理副作用，如数据获取、订阅或手动修改DOM：</p>
+                    <div class="code-snippet">
+                        useEffect(() => {
+                          // 这里的代码会在组件挂载和更新后执行
+                          document.title = `You clicked ${count} times`;
+                          
+                          // 返回的函数会在组件卸载或下一次effect运行前执行清理
+                          return () => {
+                            document.title = 'React App';
+                          };
+                        }, [count]); // 仅在count更改时重新运行
+                    </div>
+                    
+                    <p>依赖数组是useEffect的关键，它决定了effect何时重新运行。空数组表示仅在挂载和卸载时运行。</p>
+                </div>
+                <div class="note-tags">
+                    <span class="note-tag">React</span>
+                    <span class="note-tag">Hooks</span>
+                    <span class="note-tag">useState</span>
+                    <span class="note-tag">useEffect</span>
+                </div>
+            </div>
+            
+            <div class="note-card">
+                <div class="note-header">
+                    <div class="note-title">Git工作流总结</div>
+                    <div class="note-date">2024-04-10</div>
+                </div>
+                <div class="note-content">
+                    <p>今天梳理了前端开发中常用的Git工作流程，特别是分支管理策略。</p>
+                    
+                    <p>常用的Git命令：</p>
+                    <div class="code-snippet">
+                        # 创建并切换到新分支
+                        git checkout -b feature/new-feature
+                        
+                        # 提交更改
+                        git add .
+                        git commit -m "添加新功能"
+                        
+                        # 推送到远程
+                        git push origin feature/new-feature
+                        
+                        # 合并分支
+                        git checkout main
+                        git merge feature/new-feature
+                    </div>
+                    
+                    <p>在团队协作中，我习惯使用<span class="highlight">Git Flow</span>工作流，它包括以下主要分支：</p>
+                    <ul>
+                        <li>main/master：稳定的生产代码</li>
+                        <li>develop：开发分支</li>
+                        <li>feature/*：新功能开发</li>
+                        <li>release/*：发布准备</li>
+                        <li>hotfix/*：紧急bug修复</li>
+                    </ul>
+                    
+                    <p>使用Pull Request（PR）进行代码审查是保证代码质量的好方法。</p>
+                </div>
+                <div class="note-tags">
+                    <span class="note-tag">Git</span>
+                    <span class="note-tag">工作流</span>
+                    <span class="note-tag">版本控制</span>
+                </div>
+            </div>
+            
+            <div class="note-card">
+                <div class="note-header">
+                    <div class="note-title">性能优化小技巧</div>
+                    <div class="note-date">2024-04-15</div>
+                </div>
+                <div class="note-content">
+                    <p>今天学习了一些前端性能优化的技巧，记录如下：</p>
+                    
+                    <ol>
+                        <li>使用<span class="highlight">懒加载</span>加载图片和组件</li>
+                        <li>压缩和合并CSS/JS文件</li>
+                        <li>使用CDN加载第三方库</li>
+                        <li>合理使用浏览器缓存</li>
+                        <li>减少HTTP请求数量</li>
+                    </ol>
+                    
+                    <p>图片懒加载示例：</p>
+                    <div class="code-snippet">
+                        &lt;img 
+                          src="placeholder.jpg"
+                          data-src="actual-image.jpg"
+                          class="lazy"
+                          alt="Description"
+                        &gt;
+                        
+                        // JavaScript
+                        document.addEventListener("DOMContentLoaded", function() {
+                          const lazyImages = [].slice.call(document.querySelectorAll("img.lazy"));
+                          
+                          if ("IntersectionObserver" in window) {
+                            let lazyImageObserver = new IntersectionObserver(function(entries, observer) {
+                              entries.forEach(function(entry) {
+                                if (entry.isIntersecting) {
+                                  let lazyImage = entry.target;
+                                  lazyImage.src = lazyImage.dataset.src;
+                                  lazyImage.classList.remove("lazy");
+                                  lazyImageObserver.unobserve(lazyImage);
+                                }
+                              });
+                            });
+                            
+                            lazyImages.forEach(function(lazyImage) {
+                              lazyImageObserver.observe(lazyImage);
+                            });
+                          }
+                        });
+                    </div>
+                </div>
+                <div class="note-tags">
+                    <span class="note-tag">性能优化</span>
+                    <span class="note-tag">懒加载</span>
+                    <span class="note-tag">最佳实践</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="resources">
+            <h2>推荐学习资源</h2>
+            <ul>
+                <li><a href="https://javascript.info/" target="_blank">现代JavaScript教程</a> - 深入浅出的JavaScript学习网站</li>
+                <li><a href="https://css-tricks.com/" target="_blank">CSS-Tricks</a> - CSS技巧和最佳实践</li>
+                <li><a href="https://reactjs.org/docs/getting-started.html" target="_blank">React官方文档</a> - 学习React的最佳资源</li>
+                <li><a href="https://developer.mozilla.org/zh-CN/" target="_blank">MDN Web文档</a> - 最权威的Web技术文档</li>
+                <li><a href="https://www.frontendmentor.io/" target="_blank">Frontend Mentor</a> - 通过实践项目提升前端技能</li>
+            </ul>
+        </div>
+        
+        <a href="index.html" class="back-btn">返回首页</a>
+    </div>
+    
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>关于本站</h3>
+                <p>前端学习实践项目，记录学习历程</p>
+            </div>
+            <div class="footer-section">
+                <h3>联系方式</h3>
+                <p>邮箱：534355052@qq.com</p>
+                <p>QQ群：18323483778</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 SHJ前端学习. 个人学习项目，保留所有权利。</p>
+        </div>
+    </footer>
+</body>
+</html> 

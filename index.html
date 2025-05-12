@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>前端学习 - SHJ前端学习网站</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Font Awesome 图标库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+    /* 反馈表单样式 */
+    .feedback-container {
+      max-width: 600px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .feedback-panel {
+      display: none;
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height 0.5s ease, padding 0.5s ease;
+    }
+
+    .feedback-panel.active {
+      display: block;
+      max-height: 600px;
+      padding: 20px 0;
+    }
+
+    .btn-feedback {
+      background: linear-gradient(45deg, #2b5876, #4e4376);
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 4px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      margin-bottom: 20px;
+      display: block;
+      width: fit-content;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .btn-feedback:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      background: linear-gradient(45deg, #3a6f94, #5c5090);
+    }
+
+    .feedback-form {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .feedback-form input[type="text"] {
+      height: 40px;
+      padding: 10px;
+      font-size: 14px;
+      width: 100%;
+    }
+
+    .feedback-form textarea {
+      height: 80px;
+      padding: 10px;
+      resize: none;
+      font-size: 14px;
+      overflow-y: auto;
+      min-height: 80px;
+      max-height: 300px;
+    }
+
+    .upload-container {
+      margin: 20px 0;
+      display: flex;
+      align-items: center;
+    }
+
+    .file-status {
+      margin-left: 10px;
+      font-size: 0.9em;
+      color: #666;
+    }
+
+    /* 按钮样式 */
+    .btn-upload, .btn-submit {
+      background: linear-gradient(45deg, #2b5876, #4e4376);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-upload:hover, .btn-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      background: linear-gradient(45deg, #3a6f94, #5c5090);
+    }
+
+    .btn-upload:active, .btn-submit:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-submit {
+      min-width: 120px;
+      margin-top: 10px;
+      font-weight: 500;
+    }
+
+    /* 卡片样式 */
+    .cards-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      padding: 2rem;
+    }
+
+    .card-link {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      transition: transform 0.3s ease;
+    }
+
+    .card-link:hover {
+      transform: translateY(-10px);
+    }
+
+    .card {
+      background: var(--card-bg);
+      padding: 2rem;
+      border-radius: 10px;
+      text-align: center;
+      transition: box-shadow 0.3s ease;
+      height: 100%;
+    }
+
+    .card-link:hover .card {
+      box-shadow: 0 10px 20px rgba(74, 144, 226, 0.3);
+    }
+
+    .card i {
+      font-size: 3rem;
+      color: var(--accent-color);
+      margin-bottom: 1rem;
+    }
+
+    /* 欢迎区域样式 */
+    .hero-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 2rem 1rem;
+      text-align: center;
+      margin-top: 60px;
+      background: linear-gradient(135deg, #1a1a2e 0%, #202040 100%);
+    }
+
+    .hero-title {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: var(--accent-color);
+      font-weight: bold;
+    }
+
+    .hero-subtitle {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      max-width: 700px;
+      line-height: 1.6;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .hero-btn {
+      padding: 0.8rem 1.5rem;
+      background-color: var(--accent-color);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+
+    .hero-btn.outline {
+      background-color: transparent;
+      border: 2px solid var(--accent-color);
+      color: var(--accent-color);
+    }
+
+    .hero-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(74, 144, 226, 0.3);
+    }
+
+    .hero-btn.outline:hover {
+      background-color: var(--accent-color);
+      color: white;
+    }
+
+    /* 关于网站区域样式 */
+    .about-section {
+      padding: 4rem 2rem;
+      background-color: rgba(42, 42, 74, 0.3);
+    }
+
+    .about-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .about-content {
+      flex: 1;
+      min-width: 300px;
+    }
+
+    .about-image {
+      flex: 1;
+      min-width: 300px;
+      text-align: center;
+    }
+
+    .about-image img {
+      max-width: 100%;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .about-title {
+      color: var(--accent-color);
+      margin-bottom: 1.5rem;
+      font-size: 2rem;
+    }
+
+    .about-text {
+      margin-bottom: 1.5rem;
+      line-height: 1.7;
+    }
+
+    .feature-list {
+      list-style: none;
+      margin-bottom: 1.5rem;
+    }
+
+    .feature-list li {
+      margin-bottom: 0.8rem;
+      display: flex;
+      align-items: center;
+    }
+
+    .feature-list li i {
+      color: var(--accent-color);
+      margin-right: 0.8rem;
+    }
+
+    /* 技能指标样式 */
+    .skills {
+      margin-top: 2rem;
+    }
+
+    .skill-item {
+      margin-bottom: 1.5rem;
+    }
+
+    .skill-info {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+    }
+
+    .skill-bar {
+      height: 10px;
+      background-color: #3a3a5e;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+
+    .skill-progress {
+      height: 100%;
+      background-color: var(--accent-color);
+    }
+
+    /* SHJ字母样式 */
+    .shj-container {
+      text-align: center;
+      padding: 3rem 0;
+      background-color: #1a1a2e;
+      overflow-x: hidden;
+    }
+
+    .shj-wrapper {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: nowrap;
+      max-width: 100%;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    .shj-letter {
+      font-size: 8rem;
+      font-weight: bold;
+      color: #4a90e2;
+      border: 4px solid #4a90e2;
+      padding: 1rem 2rem;
+      border-radius: 12px;
+      background: rgba(74, 144, 226, 0.1);
+      box-shadow: 0 5px 15px rgba(74, 144, 226, 0.3);
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      cursor: pointer;
+      animation: fadeInUp 0.8s ease forwards;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    .shj-letter:nth-child(1) {
+      animation-delay: 0.1s;
+    }
+
+    .shj-letter:nth-child(2) {
+      animation-delay: 0.3s;
+    }
+
+    .shj-letter:nth-child(3) {
+      animation-delay: 0.5s;
+    }
+
+    .shj-letter:nth-child(4) {
+      animation-delay: 0.7s;
+    }
+
+    .shj-letter:nth-child(5) {
+      animation-delay: 0.9s;
+    }
+
+    .shj-letter:nth-child(6) {
+      animation-delay: 1.1s;
+    }
+
+    .shj-letter:nth-child(7) {
+      animation-delay: 1.3s;
+    }
+
+    .shj-letter:nth-child(8) {
+      animation-delay: 1.5s;
+    }
+
+    /* 响应式调整 */
+    @media (max-width: 768px) {
+      .shj-letter {
+        font-size: 6rem;
+        padding: 0.8rem 1.6rem;
+      }
+    }
+    
+    @media (max-width: 576px) {
+      .shj-letter {
+        font-size: 4rem;
+        padding: 0.6rem 1.2rem;
+        border-width: 3px;
+      }
+      
+      .shj-wrapper {
+        gap: 1rem;
+      }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* 更多资源按钮样式 */
+    .btn-more {
+      background: linear-gradient(45deg, #4a90e2, #65a7ff);
+      color: white;
+      border: none;
+      padding: 1rem 2.5rem;
+      border-radius: 30px;
+      font-size: 1.1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-shadow: 0 5px 15px rgba(74, 144, 226, 0.3);
+      position: relative;
+      overflow: hidden;
+      margin: 2rem auto;
+      display: block;
+      z-index: 1;
+    }
+
+    .btn-more:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, #3a6f94, #5c5090);
+      opacity: 0;
+      z-index: -1;
+      transition: opacity 0.3s ease;
+    }
+
+    .btn-more:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(74, 144, 226, 0.5);
+    }
+
+    .btn-more:hover:before {
+      opacity: 1;
+    }
+
+    .btn-more:active {
+      transform: translateY(0);
+      box-shadow: 0 5px 15px rgba(74, 144, 226, 0.3);
+    }
+
+    .btn-view-my-feedbacks {
+      background: linear-gradient(45deg, #2b5876, #4e4376);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      margin-top: 10px;
+    }
+
+    .btn-view-my-feedbacks:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      background: linear-gradient(45deg, #3a6f94, #5c5090);
+    }
+
+    .btn-view-my-feedbacks:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .user-feedbacks {
+      margin-top: 20px;
+      text-align: left;
+    }
+
+    .feedbacks-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .feedbacks-list li {
+      margin-bottom: 10px;
+      padding: 10px;
+      background-color: #f0f0f0;
+      border-radius: 5px;
+    }
+
+    .feedbacks-list li:last-child {
+      margin-bottom: 0;
+    }
+
+    @keyframes pulse-btn {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="nav-brand">SHJ前端学习</div>
+        <ul class="nav-links">
+            <li><a href="#home">首页</a></li>
+            <li><a href="#about">关于网站</a></li>
+            <li><a href="#services">学习资源</a></li>
+            <li><a href="#contact">联系管理员</a></li>
+        </ul>
+    </nav>
+
+    <!-- 欢迎区域 -->
+    <section class="hero-section" id="home">
+        <h1 class="hero-title">探索前端开发的奇妙世界</h1>
+        <p class="hero-subtitle">欢迎来到SHJ前端学习网站，这里提供全面的前端开发学习资源，从基础HTML、CSS到高级JavaScript框架。</p>
+        <div class="hero-buttons">
+            <a href="#services" class="hero-btn">开始学习</a>
+            <a href="#about" class="hero-btn outline">了解更多</a>
+        </div>
+    </section>
+
+    <!-- 轮播图区域 -->
+    <div class="carousel">
+        <div class="carousel-container">
+            <div class="carousel-slide">
+                <img src="./images/blue.jpg" alt="前端开发技能">
+            </div>
+            <div class="carousel-slide">
+                <img src="./images/red.jpg" alt="响应式设计">
+            </div>
+            <div class="carousel-slide">
+                <img src="./images/yellow.jpg" alt="交互式效果">
+            </div>
+        </div>
+        <button class="carousel-btn prev"><i class="fas fa-chevron-left"></i></button>
+        <button class="carousel-btn next"><i class="fas fa-chevron-right"></i></button>
+    </div>
+
+    <!-- SHJ 大字标识 -->
+    <div class="shj-container">
+        <h2 style="color: #4a90e2; margin-bottom: 2rem; font-size: 1.8rem;">个人介绍</h2>
+        <div class="shj-wrapper">
+            <div class="shj-letter">S</div>
+            <div class="shj-letter">H</div>
+            <div class="shj-letter">J</div>
+        </div>
+    </div>
+
+    <!-- 关于网站区域 -->
+    <section id="about" class="about-section">
+        <div class="about-container">
+            <div class="about-content">
+                <h2 class="about-title">关于SHJ前端学习</h2>
+                <p class="about-text">SHJ前端学习是一个专注于帮助SHJ了解前端开发技术的学习平台。我的目标是通过系统化的教程和实践项目，帮助自身快速掌握前端技能，构建现代化的网页应用。</p>
+                <ul class="feature-list">
+                    <li><i class="fas fa-check-circle"></i> 全面的前端技术覆盖，包括HTML、CSS、JavaScript</li>
+                    <li><i class="fas fa-check-circle"></i> 主流框架学习资源，React、Vue、Angular等</li>
+                    <li><i class="fas fa-check-circle"></i> 响应式设计与移动端开发实践</li>
+                    <li><i class="fas fa-check-circle"></i> 实际项目案例与部署经验分享</li>
+                    <li><i class="fas fa-check-circle"></i> 个人学习笔记与心得体会</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- 用户注册和登录模块 -->
+    <section id="contact" class="section">
+        <div class="auth-container">
+            <div class="auth-form-container">
+                <h2 class="section-title">用户注册</h2>
+                <form id="registerForm" class="register-form">
+                    <div class="form-group">
+                        <input type="text" id="username" placeholder="用户名" required>
+                        <label for="username">用户名</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="password" placeholder="密码" required>
+                        <label for="password">密码</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="confirmPassword" placeholder="确认密码" required>
+                        <label for="confirmPassword">确认密码</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" id="email" placeholder="邮箱" required>
+                        <label for="email">邮箱</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="tel" id="phone" placeholder="手机号" required>
+                        <label for="phone">手机号</label>
+                    </div>
+                    <button type="submit" class="btn-register">注册</button>
+                    <p class="form-switch">已有账号？<a href="#" id="showLoginForm">点击登录</a></p>
+                </form>
+            </div>
+
+            <div class="auth-form-container" id="loginFormContainer">
+                <h2 class="section-title">用户登录</h2>
+                <form id="loginForm" class="login-form">
+                    <div class="form-group">
+                        <input type="text" id="loginUsername" placeholder="用户名" required>
+                        <label for="loginUsername">用户名</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="loginPassword" placeholder="密码" required>
+                        <label for="loginPassword">密码</label>
+                    </div>
+                    <button type="submit" class="btn-login">登录</button>
+                    <p class="form-switch">没有账号？<a href="#" id="showRegisterForm">点击注册</a></p>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- 反馈模块 -->
+    <section class="section">
+        <div class="feedback-container">
+            <button class="btn-feedback" id="showFeedbackBtn">提供反馈</button>
+            <div class="feedback-panel" id="feedbackPanel">
+                <form class="feedback-form">
+                    <div class="form-group">
+                        <input type="text" id="subject" placeholder="反馈主题" required>
+                    </div>
+                    <div class="form-group">
+                        <textarea id="content" placeholder="请输入您的反馈内容" required></textarea>
+                    </div>
+                    <div class="upload-container">
+                        <label for="file" class="btn-upload">
+                            <i class="fas fa-upload"></i> 上传附件
+                        </label>
+                        <input type="file" id="file" style="display: none;">
+                        <span class="file-status"></span>
+                    </div>
+                    <button type="submit" class="btn-submit">提交反馈</button>
+                </form>
+                <button type="button" id="viewMyFeedbacks" class="btn-view-my-feedbacks">
+                    <i class="fas fa-list"></i> 查看我的反馈
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 服务卡片区域 -->
+    <section id="services" class="section">
+        <h2 class="section-title">学习资源</h2>
+        <div class="cards-container">
+            <a href="html-css.html" class="card-link">
+                <div class="card">
+                    <i class="fas fa-code"></i>
+                    <h3>HTML/CSS</h3>
+                    <p>从基础到高级的HTML和CSS学习资源</p>
+                </div>
+            </a>
+            <a href="javascript.html" class="card-link">
+                <div class="card">
+                    <i class="fas fa-js"></i>
+                    <h3>JavaScript</h3>
+                    <p>交互式JavaScript学习和实践</p>
+                </div>
+            </a>
+            <a href="frameworks.html" class="card-link">
+                <div class="card">
+                    <i class="fas fa-react"></i>
+                    <h3>前端框架</h3>
+                    <p>React、Vue等主流前端框架学习</p>
+                </div>
+            </a>
+            <a href="responsive.html" class="card-link">
+                <div class="card">
+                    <i class="fas fa-mobile-alt"></i>
+                    <h3>响应式设计</h3>
+                    <p>学习适配不同设备的网页设计</p>
+                </div>
+            </a>
+            <a href="projects.html" class="card-link">
+                <div class="card">
+                    <i class="fas fa-project-diagram"></i>
+                    <h3>项目实战</h3>
+                    <p>实际前端项目的构建与部署</p>
+                </div>
+            </a>
+            <a href="notes.html" class="card-link">
+                <div class="card">
+                    <i class="fas fa-book"></i>
+                    <h3>学习笔记</h3>
+                    <p>前端学习过程中的心得体会</p>
+                </div>
+            </a>
+        </div>
+        <button id="moreInfoBtn" class="btn-more">更多资源</button>
+    </section>
+
+    <!-- 反馈模态框 -->
+    <div id="feedbackModal" class="modal feedback-modal">
+        <div class="modal-content">
+            <span class="close-feedback">&times;</span>
+            <h2>我的反馈列表</h2>
+            <div id="myFeedbacksList" class="feedbacks-list">
+                正在加载...
+            </div>
+        </div>
+    </div>
+
+    <!-- 模态框 -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>关于本站</h2>
+            <p>这是一个用于前端学习与实践的个人网站，整合了多种前端技术和组件。</p>
+            <p>本站使用HTML、CSS和JavaScript构建，展示了响应式设计、表单处理、动画效果等多种前端技术的应用。</p>
+            <p>作为学习项目，网站会持续更新与完善，欢迎提供反馈和建议。</p>
+        </div>
+    </div>
+
+    <!-- 联系管理员模态框 -->
+    <div id="contactModal" class="modal">
+        <div class="modal-content">
+            <span class="close-contact">&times;</span>
+            <h2>联系管理员</h2>
+            <form id="contactForm" class="contact-form">
+                <div class="form-group">
+                    <input type="text" id="contactName" placeholder="您的姓名" required>
+                    <label for="contactName">您的姓名</label>
+                </div>
+                <div class="form-group">
+                    <input type="email" id="contactEmail" placeholder="您的邮箱" required>
+                    <label for="contactEmail">您的邮箱</label>
+                </div>
+                <div class="form-group">
+                    <textarea id="contactMessage" placeholder="请输入您的留言内容" required></textarea>
+                    <label for="contactMessage">留言内容</label>
+                </div>
+                <button type="submit" class="btn-submit">发送留言</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>关于本站</h3>
+                <p>前端学习实践项目，记录学习历程</p>
+            </div>
+            <div class="footer-section">
+                <h3>联系方式</h3>
+                <p>邮箱：534355052@qq.com</p>
+                <p>手机：18323483778</p>
+            </div>
+            <div class="footer-section">
+                <h3>关注我的平台</h3>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-weixin"></i></a>
+                    <a href="#"><i class="fab fa-weibo"></i></a>
+                    <a href="#"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 SHJ前端学习. 个人学习项目，保留所有权利。</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // 在页面加载完成后执行
+        document.addEventListener('DOMContentLoaded', function() {
+            // 获取反馈面板相关元素
+            const showFeedbackBtn = document.getElementById('showFeedbackBtn');
+            const feedbackPanel = document.getElementById('feedbackPanel');
+            const feedbackForm = document.getElementById('feedbackForm');
+            const uploadBtn = document.getElementById('uploadBtn');
+            const subjectInput = document.getElementById('subject');
+            const contentTextarea = document.getElementById('content');
+            
+            // SHJ字母动画效果
+            const shjLetters = document.querySelectorAll('.shj-letter');
+            
+            // 为每个字母添加交互效果
+            shjLetters.forEach((letter, index) => {
+                letter.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-10px)';
+                    this.style.boxShadow = '0 15px 25px rgba(74, 144, 226, 0.5)';
+                    this.style.color = 'white';
+                    this.style.background = 'linear-gradient(45deg, #4a90e2, #65a7ff)';
+                });
+                
+                letter.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                    this.style.boxShadow = '0 5px 15px rgba(74, 144, 226, 0.3)';
+                    this.style.color = '#4a90e2';
+                    this.style.background = 'rgba(74, 144, 226, 0.1)';
+                });
+                
+                letter.addEventListener('click', function() {
+                    // 添加脉冲动画效果
+                    this.style.transform = 'scale(0.95)';
+                    this.style.boxShadow = '0 0 0 10px rgba(74, 144, 226, 0.1)';
+                    
+                    // 创建脉冲波纹效果
+                    const pulseEffect = document.createElement('div');
+                    pulseEffect.style.position = 'absolute';
+                    pulseEffect.style.top = '0';
+                    pulseEffect.style.left = '0';
+                    pulseEffect.style.right = '0';
+                    pulseEffect.style.bottom = '0';
+                    pulseEffect.style.borderRadius = '15px'; 
+                    pulseEffect.style.background = 'rgba(74, 144, 226, 0.2)';
+                    pulseEffect.style.zIndex = '-1';
+                    pulseEffect.style.animation = 'pulse 0.8s ease-out';
+                    
+                    // 确保字母有相对定位以便添加绝对定位的波纹效果
+                    if (getComputedStyle(this).position === 'static') {
+                        this.style.position = 'relative';
+                    }
+                    
+                    this.appendChild(pulseEffect);
+                    
+                    // 动画结束后移除元素
+                    setTimeout(() => {
+                        this.style.transform = 'translateY(0)';
+                        this.style.boxShadow = '0 5px 15px rgba(74, 144, 226, 0.3)';
+                        pulseEffect.remove();
+                    }, 800);
+                    
+                    // 根据字母滚动到对应部分
+                    const sections = ['#home', '#about', '#services'];
+                    document.querySelector(sections[index]).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+            
+            // 添加脉冲动画关键帧
+            if (!document.querySelector('#pulseAnimation')) {
+                const style = document.createElement('style');
+                style.id = 'pulseAnimation';
+                style.innerHTML = `
+                    @keyframes pulse {
+                        0% { transform: scale(1); opacity: 1; }
+                        100% { transform: scale(1.5); opacity: 0; }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+            
+            // 更多资源按钮动画效果
+            const moreInfoBtn = document.getElementById('moreInfoBtn');
+            if (moreInfoBtn) {
+                // 初始动画效果
+                setTimeout(() => {
+                    moreInfoBtn.style.animation = 'pulse-btn 2s infinite';
+                }, 2000);
+                
+                moreInfoBtn.addEventListener('mouseenter', function() {
+                    this.style.animation = 'none';
+                });
+                
+                moreInfoBtn.addEventListener('mouseleave', function() {
+                    setTimeout(() => {
+                        this.style.animation = 'pulse-btn 2s infinite';
+                    }, 500);
+                });
+            }
+            
+            // 处理反馈按钮点击事件 - 显示/隐藏反馈面板
+            if (showFeedbackBtn && feedbackPanel) {
+                showFeedbackBtn.addEventListener('click', function() {
+                    // 切换反馈面板的显示状态
+                    feedbackPanel.classList.toggle('active');
+                    
+                    // 如果面板被打开，清空输入框
+                    if (feedbackPanel.classList.contains('active')) {
+                        subjectInput.value = '';
+                        contentTextarea.value = '';
+                    }
+                });
+            }
+            
+            // 处理上传附件按钮点击事件
+            if (uploadBtn) {
+                uploadBtn.addEventListener('click', function() {
+                    alert('附件上传功能将在后续实现');
+                });
+            }
+            
+            // 处理表单提交事件
+            if (feedbackForm) {
+                feedbackForm.addEventListener('submit', function(e) {
+                    e.preventDefault(); // 阻止表单默认提交行为
+                    
+                    // 简单的表单验证
+                    if (!subjectInput.value.trim() || !contentTextarea.value.trim()) {
+                        alert('请填写完整的反馈信息');
+                        return;
+                    }
+                    
+                    // 模拟提交成功
+                    alert('反馈提交成功！感谢您的反馈。');
+                    
+                    // 清空表单并隐藏面板
+                    subjectInput.value = '';
+                    contentTextarea.value = '';
+                    feedbackPanel.classList.remove('active');
+                });
+            }
+        });
+    </script>
+</body>
+</html> 

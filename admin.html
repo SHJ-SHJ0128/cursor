@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理员控制台 - SHJ前端学习</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="logo">SHJ 管理控制台</div>
+        <ul class="nav-links">
+            <li><a href="index.html"><i class="fas fa-home"></i> 返回首页</a></li>
+            <li><a href="#" id="logoutAdmin" style="display: none;"><i class="fas fa-sign-out-alt"></i> 退出登录</a></li>
+        </ul>
+    </nav>
+
+    <!-- 管理员登录区域 -->
+    <div class="admin-container" id="adminLogin">
+        <div class="admin-card">
+            <h2><i class="fas fa-user-shield"></i> 管理员登录</h2>
+            <form id="adminLoginForm">
+                <div class="form-group">
+                    <input type="text" id="adminUsername" placeholder="管理员用户名" required>
+                    <label for="adminUsername">管理员用户名</label>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="adminPassword" placeholder="管理员密码" required>
+                    <label for="adminPassword">管理员密码</label>
+                </div>
+                <button type="submit" class="btn-admin-login">登录管理控制台</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 管理控制台面板 -->
+    <div class="admin-dashboard" id="adminDashboard" style="display: none;">
+        <div class="dashboard-header">
+            <h1>管理员控制台</h1>
+            <p>欢迎回来，<span id="adminName">管理员</span></p>
+        </div>
+
+        <!-- 数据统计 -->
+        <div class="stats-container">
+            <div class="stat-card">
+                <i class="fas fa-users"></i>
+                <h3>用户总数</h3>
+                <p id="totalUsers">0</p>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-comments"></i>
+                <h3>反馈总数</h3>
+                <p id="totalFeedbacks">0</p>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-user-clock"></i>
+                <h3>今日新增用户</h3>
+                <p id="newUsers">0</p>
+            </div>
+        </div>
+
+        <!-- 管理选项卡 -->
+        <div class="admin-tabs">
+            <div class="tab-buttons">
+                <button class="tab-btn active" data-tab="users"><i class="fas fa-users"></i> 用户管理</button>
+                <button class="tab-btn" data-tab="feedbacks"><i class="fas fa-comments"></i> 反馈管理</button>
+            </div>
+            
+            <!-- 用户管理选项卡 -->
+            <div class="tab-content active" id="usersTab">
+                <div class="tab-header">
+                    <h2>用户管理</h2>
+                    <div class="search-box">
+                        <input type="text" id="userSearch" placeholder="搜索用户...">
+                        <i class="fas fa-search"></i>
+                    </div>
+                </div>
+                
+                <div class="table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>用户名</th>
+                                <th>邮箱</th>
+                                <th>注册时间</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="userTableBody">
+                            <!-- 用户数据将通过JavaScript动态加载 -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- 反馈管理选项卡 -->
+            <div class="tab-content" id="feedbacksTab">
+                <div class="tab-header">
+                    <h2>反馈管理</h2>
+                    <div class="search-box">
+                        <input type="text" id="feedbackSearch" placeholder="搜索反馈...">
+                        <i class="fas fa-search"></i>
+                    </div>
+                </div>
+                
+                <div class="table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>用户</th>
+                                <th>主题</th>
+                                <th>内容</th>
+                                <th>提交时间</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="feedbackTableBody">
+                            <!-- 反馈数据将通过JavaScript动态加载 -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 用户详情模态框 -->
+    <div id="userModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>用户详情</h2>
+            <div id="userDetails" class="user-details">
+                <!-- 用户详情将通过JavaScript动态加载 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 反馈详情模态框 -->
+    <div id="feedbackModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>反馈详情</h2>
+            <div id="feedbackDetails" class="feedback-details">
+                <!-- 反馈详情将通过JavaScript动态加载 -->
+            </div>
+        </div>
+    </div>
+
+    <script src="admin.js"></script>
+</body>
+</html> 
